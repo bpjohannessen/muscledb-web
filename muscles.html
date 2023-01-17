@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- jQuery with non-tamper tag -->
+  <script src="https://code.jquery.com/jquery-3.6.3.js"
+          integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+          crossorigin="anonymous"></script>
+  <script src="js/muscles.js"></script>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>List all muscles</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- <link rel="icon" type="image/png" href="images/favicon.png"> -->
+
+</head>
+ <body>
+    <div id="main" class="container">
+        <div class="row">
+            <div class="u-full-width">
+                <nav id="nav-replace"></nav>
+                <!-- <script>
+                    window.onload = function(){
+                        $.get("nav.html", function(data){
+                            $("#nav-replace").html(data);
+                        })
+                    }
+                </script> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns" style="margin-top: 10px;">
+                <div class="row">
+                    <div class="four columns offset-by-four">
+                        <a href="/v2/">Back</a>
+                        <table id="muscleResults">
+                            <tbody id="tbodyappend">
+                                <!-- JS will append information about the muscle here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+ </html>
