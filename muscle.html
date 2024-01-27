@@ -1,0 +1,39 @@
+<html>
+ <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/muscle.js"></script>
+    <!-- <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+    <link rel="stylesheet" href="css/custom.css"> -->
+</head>
+ <body>
+    <div id="main" class="container">
+        <div class="row">
+            <div class="u-full-width">
+                <nav id="nav-replace"></nav>
+                <!-- <script>
+                    window.onload = function(){
+                        $.get("nav.html", function(data){
+                            $("#nav-replace").html(data);
+                        })
+                    }
+                </script> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns" style="margin-top: 10px;">
+                <div class="row">
+                    <div class="four columns offset-by-four">
+                        <a href="/v2/">Back</a>
+                        <table id="muscleResults">
+                            <tbody id="tbodyappend">
+                                <!-- JS will append information about the muscle here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+ </html>

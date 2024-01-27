@@ -4,7 +4,7 @@ $(document).ready(function () {
     var $table = $("tbody#tbodyappend");
 
     console.log("Now showing all muscless:")
-    const api_url = "http://143.42.26.41/muscles";
+    const api_url = "http://localhost:3000/muscles";
     console.log(api_url);
     async function getMuscles() {
         const response = await fetch(api_url);
