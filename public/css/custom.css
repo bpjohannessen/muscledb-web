@@ -1,0 +1,171 @@
+/* muscledb theme v6 ------------------------------------------------------
+ * Anatomy reference. Latin names in an italic serif (scientific convention);
+ * arteries / veins / nerves colour-coded red / blue / amber.
+ * If `curl .../css/custom.css | grep "theme v6"` matches, the live file is current.
+ * --------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,500&display=swap');
+
+:root {
+  --page:    #eef1f4;
+  --surface: #ffffff;
+  --ink:     #1b2127;
+  --muted:   #5b6770;
+  --hair:    #e2e6ea;
+  --accent:  #a32638;
+  --accent-d:#7c1b2b;
+  --artery:  #c0392b;
+  --vein:    #2d6ca2;
+  --nerve:   #b9871f;
+  --bar:     #20262b;
+}
+
+/* ---------- base ---------- */
+html { overflow-y: scroll; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-d); text-decoration: underline; }
+.container { max-width: 760px; }
+
+/* ---------- navigation ---------- */
+nav { float: left; width: 100%; background: var(--bar); overflow: hidden; position: relative; }
+nav ul {
+  list-style: none; margin: 0; padding: 4px 0;
+  left: 0 !important; float: none !important; width: 100%; height: auto !important;
+  display: flex; flex-wrap: wrap; justify-content: center;
+}
+nav ul li { right: 0 !important; float: none !important; margin: 0; padding: 0; }
+nav ul li a {
+  display: block; padding: 14px 18px; background: transparent;
+  color: #e7ebee; font-size: 1.3rem; font-weight: 500; letter-spacing: 0.01em;
+}
+nav ul li a:hover { background: #2c343a; color: #fff; text-decoration: none; }
+nav ul li a.active, nav ul li a.active:hover {
+  background: transparent; color: #fff; font-weight: 600; box-shadow: inset 0 -3px 0 var(--accent);
+}
+
+/* ---------- content column width ---------- */
+div#main.container { text-align: center; }
+/* The pages put content in a narrow "four columns" slot — fine on phones
+ * (full width), too narrow on desktop. Widen + re-center above Skeleton's
+ * 550px breakpoint. */
+@media (min-width: 550px) {
+  .four.columns.offset-by-four { width: 62% !important; margin-left: 19% !important; }
+}
+
+/* ---------- search (index) ---------- */
+input#searchterm {
+  width: 100%; height: 46px; padding: 0 14px; font-size: 1.05rem;
+  border: 1px solid var(--hair); border-radius: 8px; background: var(--surface);
+  box-shadow: 0 1px 2px rgba(20,30,40,0.04); transition: border-color .15s, box-shadow .15s;
+}
+input#searchterm:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(163,38,56,0.12); }
+
+table#muscleResults { width: 100% !important; max-width: 100%; }
+
+/* search results: tidy cards (search table has no <th>) */
+table#muscleResults { border: none !important; border-collapse: separate; border-spacing: 0 6px; margin-top: 14px; }
+td#muscleResultItem {
+  padding: 0; background: var(--surface); border: 1px solid var(--hair); border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(20,30,40,0.04); font-size: 0.98rem; transition: border-color .12s, box-shadow .12s;
+}
+td#muscleResultItem:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(163,38,56,0.12); }
+td#muscleResultItem a { display: block; padding: 11px 14px; color: var(--ink); }
+td#muscleResultItem a:hover { color: var(--accent); text-decoration: none; }
+
+/* ---------- detail card (muscle / artery / vein / nerve) ---------- */
+/* Detail tables have <th> label cells; the search table does not. */
+#muscleResults:has(th) {
+  background: var(--surface); border: 1px solid var(--hair) !important; border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(20,30,40,0.06); border-spacing: 0; margin-top: 6px;
+  overflow: hidden; text-align: left; table-layout: fixed;
+}
+#muscleResults:has(th) th, #muscleResults:has(th) td {
+  padding: 11px 18px; border-bottom: 1px solid var(--hair);
+  vertical-align: top; overflow-wrap: anywhere;
+}
+#muscleResults:has(th) tr:last-child th, #muscleResults:has(th) tr:last-child td { border-bottom: none; }
+/* larger, readable value text in the detail card */
+#muscleResults:has(th) td { font-size: 1.15rem; line-height: 1.45; }
+
+/* label column (data rows). Title rows span via colspan and are handled below. */
+#muscleResults:has(th) th {
+  width: 30%; color: var(--muted); font-weight: 700; font-size: 0.9rem;
+  text-transform: uppercase; letter-spacing: 0.04em; white-space: normal;
+}
+
+/* Hero: Latin name — first row on every detail page. colspan makes it span;
+ * no display:block (that would shrink-wrap and stack the words). */
+#muscleResults tbody tr:first-child > th,
+#muscleResults tbody tr.m-latin > th {
+  width: auto; text-align: center; text-transform: none; letter-spacing: 0;
+  font-family: 'Newsreader', Georgia, serif; font-style: italic; font-weight: 500;
+  font-size: 2rem; line-height: 1.2; color: var(--ink);
+  background: #fbfcfd; padding: 22px 18px 6px; border-bottom: none;
+}
+/* Subtitle: English name */
+#muscleResults tbody tr:nth-child(2) > th,
+#muscleResults tbody tr.m-english > th {
+  width: auto; text-align: center; text-transform: none; letter-spacing: 0;
+  font-weight: 600; font-size: 1.2rem; color: var(--muted);
+  background: #fbfcfd; padding: 0 18px 18px; border-bottom: 1px solid var(--hair);
+}
+/* Group breadcrumb */
+#muscleResults tbody tr.m-groups > td {
+  text-align: center; font-family: 'Newsreader', Georgia, serif; font-style: italic;
+  font-size: 1.4rem; color: var(--muted); background: #fbfcfd;
+}
+
+/* Anatomy colour-coding */
+#muscleResults tr.m-artery th { color: var(--artery); }
+#muscleResults tr.m-vein   th { color: var(--vein); }
+#muscleResults tr.m-nerve  th { color: var(--nerve); }
+#muscleResults tr.m-vessel td { box-shadow: inset 3px 0 0 var(--hair); }
+#muscleResults tr.m-artery td { box-shadow: inset 3px 0 0 var(--artery); }
+#muscleResults tr.m-vein   td { box-shadow: inset 3px 0 0 var(--vein); }
+#muscleResults tr.m-nerve  td { box-shadow: inset 3px 0 0 var(--nerve); }
+#muscleResults .m-none { color: #aab2b8; font-size: 1.15rem; }
+
+/* Image */
+#muscleResults tr.m-image td { text-align: center; background: #fbfcfd; padding: 18px; }
+#muscleResults tr.m-image img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--hair); }
+img.m-img-missing { border: 1px dashed var(--hair); }
+
+/* Back link */
+.four.columns > a[href^="javascript"] { display: inline-block; margin: 0 0 12px; font-weight: 600; font-size: 0.9rem; }
+.four.columns > a[href^="javascript"]::before { content: "\2039  "; }
+
+/* ---------- group tree (groups.html) ---------- */
+div#grouplist { text-align: left; }
+div#grouplist > ul {
+  background: var(--surface); border: 1px solid var(--hair); border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(20,30,40,0.06); padding: 18px 22px;
+}
+div#grouplist ul { list-style: none !important; padding-left: 14px; }
+div#grouplist li { margin: 3px 0; list-style: none !important; }
+div#grouplist li[style*="bold"] {
+  font-family: 'Newsreader', Georgia, serif; font-style: normal; font-weight: 600;
+  font-size: 1.05rem; color: var(--ink); margin-top: 10px;
+}
+/* muscle leaf list: kill the inline square marker, use one red dot */
+ul[id^="ml"], ul[id^="ml"] li { list-style: none !important; }
+ul[id^="ml"] { padding-left: 6px; }
+ul[id^="ml"] li::before { content: "\2022"; color: var(--accent); margin-right: 8px; }
+ul[id^="ml"] li a { font-family: 'Newsreader', Georgia, serif; font-style: italic; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 550px) {
+  body { font-size: 15px; }
+  .container { padding: 0 12px; }
+  nav ul li a { padding: 12px 14px; }
+  #muscleResults tbody tr:first-child > th,
+  #muscleResults tbody tr.m-latin > th { font-size: 1.55rem; }
+  #muscleResults:has(th) td { font-size: 1.05rem; }
+  #muscleResults:has(th) th, #muscleResults:has(th) td { padding: 10px 14px; }
+}

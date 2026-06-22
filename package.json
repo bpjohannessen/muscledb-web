@@ -1,0 +1,17 @@
+{
+  "name": "muscledb-web",
+  "version": "2.0.0",
+  "description": "Anatomy reference API + web interface (muscles, arteries, veins, nerves, muscle groups). Node.js port of the original ASP.NET Core muscledb.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^11.0.0"
+  },
+  "license": "MIT"
+}
