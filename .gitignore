@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.npm-global/
+npm-debug.log*
+yarn-error.log*
+
+# Logs
+*.log
+logs/
+
+# Runtime / OS
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Build / temp output
+dist/
+build/
+tmp/
+*.tmp
+
+# SQLite scratch files (the committed db/muscles.db is intentional)
+*.db-journal
+*.db-wal
+*.db-shm
