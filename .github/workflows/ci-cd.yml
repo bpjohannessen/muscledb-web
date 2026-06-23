@@ -1,0 +1,73 @@
+name: CI / Deploy
+
+# Run on every push to main, and allow manual runs from the Actions tab.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ---------------------------------------------------------------------
+  # 1) TEST — runs the smoke test against the committed database.
+  # ---------------------------------------------------------------------
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          lfs: true            # in case db/muscles.db is tracked via Git LFS
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run smoke tests
+        run: npm test
+
+  # ---------------------------------------------------------------------
+  # 2) DEPLOY — only if tests pass; syncs to the Linode and restarts.
+  # ---------------------------------------------------------------------
+  deploy:
+    needs: test            # gate: deploy only runs if the test job succeeded
+    runs-on: ubuntu-latest
+    # Skip deploy on manual test runs of other branches; deploy from main only.
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Deploy over SSH and restart service
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          REMOTE_DIR: /opt/muscledb-web
+        run: |
+          set -euo pipefail
+
+          # Load the deploy key
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          # Pin the server's host key (prevents man-in-the-middle)
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Sync the project (delete removed files, but never touch node_modules/.git)
+          rsync -az --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            ./ "$SSH_USER@$SSH_HOST:$REMOTE_DIR/"
+
+          # Restart and confirm it came back up
+          ssh -i ~/.ssh/deploy_key "$SSH_USER@$SSH_HOST" \
+            'sudo systemctl restart muscledb-web && sleep 1 && systemctl is-active muscledb-web'
