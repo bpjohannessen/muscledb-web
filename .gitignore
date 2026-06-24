@@ -15,7 +15,7 @@ Thumbs.db
 *~
 
 # Editor / IDE
-.vscode/
+# .vscode/
 .idea/
 
 # Environment / secrets

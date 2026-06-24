@@ -1,0 +1,33 @@
+{
+  // ---- screen space (tuned for a 13" display) ----
+  "editor.minimap.enabled": false,            // reclaim ~120px of width
+  "editor.stickyScroll.enabled": false,
+  "breadcrumbs.enabled": false,
+  "workbench.activityBar.location": "hidden", // Cmd+Shift+E etc. still work
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.tree.indent": 12,
+  "editor.fontSize": 12,
+  "editor.lineHeight": 1.4,
+  "editor.cursorBlinking": "solid",
+
+  // ---- sane editing defaults for this repo ----
+  "editor.tabSize": 2,
+  // "editor.rulers": [100],
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // ---- hide noise from the file tree / search ----
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/public/version.json": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/public/images": true,
+    "**/db/*.db": true
+  },
+
+  // treat the SQLite file as binary so it never opens as garbage text
+  "files.associations": { "*.db": "binary" }
+}
