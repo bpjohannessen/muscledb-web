@@ -41,7 +41,11 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0       # full history so the build number (commit count) is correct
           lfs: true
+
+      - name: Generate version.json
+        run: node scripts/gen-version.js
 
       - name: Deploy over SSH and restart service
         env:
