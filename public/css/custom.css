@@ -173,7 +173,7 @@ ul[id^="ml"] li a { font-family: 'Newsreader', Georgia, serif; font-style: itali
 .vessel-path a { color: var(--muted); }
 .vessel-path a:hover { color: var(--accent); }
 .vessel-path .sep { margin: 0 0.4em; color: #bcc3c9; }
-.vessel-path .here { font-style: italic; color: #3a4148; }
+.vessel-path .here { font-style: italic; color: #fff; }
 
 /* ---------- version footer ---------- */
 #version-footer {
