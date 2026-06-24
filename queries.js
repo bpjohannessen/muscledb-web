@@ -113,7 +113,7 @@ SELECT t.id AS Id, t.name AS Name, t.lat_name AS LatinName, t.parent_id AS Paren
        m.id AS Muscles_Id, m.name AS Muscles_Name, m.lat_name AS Muscles_LatinName
   FROM tree t
   LEFT JOIN muscles m ON m.group_id = t.id
- ORDER BY t.lvl ASC`;
+ ORDER BY t.lvl ASC, t.id ASC, m.id ASC`;
 
 // GET /api/musclegroups/:id
 function muscleGroupHierarchy(groupId) {
