@@ -26,7 +26,7 @@ function isMissing(v) {
 // GET /api/muscles?searchterm=...
 function searchMuscles(searchTerm) {
   if (!searchTerm) {
-    return query('SELECT id, "function" AS functio, lat_name AS latinName, name FROM muscles ORDER BY name');
+    return query('SELECT id, "function" AS functio, lat_name AS latinName, name FROM muscles ORDER BY latinName');
   }
   const p = '%' + searchTerm + '%';
   return query(
