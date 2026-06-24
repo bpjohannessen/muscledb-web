@@ -124,11 +124,22 @@
       ? muscles.map((mu) => '<a href="#/muscle/' + mu.id + '">' + esc(mu.latinName || mu.name) + '</a>').join('<br>')
       : '<span class="m-none">\u2014</span>';
 
+    // Ancestor path (root -> current). Ancestors are links; the current vessel is plain.
+    const path = d.path || [];
+    let crumb = '';
+    if (path.length > 1) {
+      crumb = '<nav class="vessel-path">' + path.map((p, i) =>
+        i === path.length - 1
+          ? '<span class="here">' + esc(p.latinName) + '</span>'
+          : '<a href="#/' + kind + '/' + p.id + '">' + esc(p.latinName) + '</a>'
+      ).join('<span class="sep">\u203A</span>') + '</nav>';
+    }
+
     let rows = '';
     rows += '<tr class="m-latin"><th colspan="2">' + esc(latin) + '</th></tr>';
     rows += '<tr class="m-english"><th colspan="2">' + esc(name) + '</th></tr>';
     rows += '<tr class="m-vessel m-' + kind + '"><th>' + verb + '</th><td>' + list + '</td></tr>';
-    setView(backLink() + '<table id="muscleResults"><tbody>' + rows + '</tbody></table>');
+    setView(backLink() + crumb + '<table id="muscleResults"><tbody>' + rows + '</tbody></table>');
   }
 
   /* ----------------------------- group view ----------------------------- */

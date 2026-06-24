@@ -156,23 +156,35 @@ function vesselById(table, linkTable, linkCol, id) {
       WHERE lk.${linkCol} = ? ORDER BY m.name`,
     id
   );
-  return { row, muscles };
+  // Ancestor path, root -> current (inclusive). lvl guard prevents runaway on any bad cycle.
+  const path = query(
+    `WITH RECURSIVE anc(id, lat_name, parent_id, lvl) AS (
+       SELECT id, lat_name, parent_id, 0 FROM ${table} WHERE id = ?
+       UNION ALL
+       SELECT t.id, t.lat_name, t.parent_id, anc.lvl + 1
+         FROM ${table} t JOIN anc ON t.id = anc.parent_id
+        WHERE anc.lvl < 50
+     )
+     SELECT id, lat_name AS latinName FROM anc ORDER BY lvl DESC`,
+    id
+  );
+  return { row, muscles, path };
 }
 
 function arteryById(id) {
   const r = vesselById('arteries', 'muscle_arteries', 'artery_id', id);
   if (!r) return null;
-  return { id: r.row.id, artery_Name: r.row.name, artery_latinName: r.row.latinName, arteryMuscles: r.muscles };
+  return { id: r.row.id, artery_Name: r.row.name, artery_latinName: r.row.latinName, arteryMuscles: r.muscles, path: r.path };
 }
 function veinById(id) {
   const r = vesselById('veins', 'muscle_veins', 'vein_id', id);
   if (!r) return null;
-  return { id: r.row.id, vein_Name: r.row.name, vein_latinName: r.row.latinName, veinMuscles: r.muscles };
+  return { id: r.row.id, vein_Name: r.row.name, vein_latinName: r.row.latinName, veinMuscles: r.muscles, path: r.path };
 }
 function nerveById(id) {
   const r = vesselById('nerves', 'muscle_nerves', 'nerve_id', id);
   if (!r) return null;
-  return { id: r.row.id, nerve_Name: r.row.name, nerve_latinName: r.row.latinName, nerveMuscles: r.muscles };
+  return { id: r.row.id, nerve_Name: r.row.name, nerve_latinName: r.row.latinName, nerveMuscles: r.muscles, path: r.path };
 }
 
 module.exports = {

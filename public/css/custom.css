@@ -1,7 +1,7 @@
-/* muscledb theme v8 ------------------------------------------------------
+/* muscledb theme v9 ------------------------------------------------------
  * Anatomy reference. Latin names in an italic serif (scientific convention);
  * arteries / veins / nerves colour-coded red / blue / amber.
- * If `curl .../css/custom.css | grep "theme v8"` matches, the live file is current.
+ * If `curl .../css/custom.css | grep "theme v9"` matches, the live file is current.
  * --------------------------------------------------------------------- */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,500&display=swap');
@@ -162,6 +162,18 @@ ul[id^="ml"], ul[id^="ml"] li { list-style: none !important; }
 ul[id^="ml"] { padding-left: 6px; }
 ul[id^="ml"] li::before { content: "\2022"; color: var(--accent); margin-right: 8px; }
 ul[id^="ml"] li a { font-family: 'Newsreader', Georgia, serif; font-style: italic; }
+
+/* ---------- vessel ancestor path (breadcrumb) ---------- */
+.vessel-path {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 12px;
+}
+.vessel-path a { color: var(--muted); }
+.vessel-path a:hover { color: var(--accent); }
+.vessel-path .sep { margin: 0 0.4em; color: #bcc3c9; }
+.vessel-path .here { font-style: italic; color: #3a4148; }
 
 /* ---------- version footer ---------- */
 #version-footer {
