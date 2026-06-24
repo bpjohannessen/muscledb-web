@@ -65,7 +65,7 @@
     const body = document.getElementById('tbodyappend');
     if (!body) return;
     body.innerHTML = rows.map((m) =>
-      '<tr><td id="muscleResultItem"><a href="#/muscle/' + m.id + '">' + esc(m.name) + '</a></td></tr>'
+      '<tr><td id="muscleResultItem"><a href="#/muscle/' + m.id + '">' + esc(m.latinName) + ' (' + esc(m.name) + ')</a></td></tr>'
     ).join('') || '<tr><td id="muscleResultItem" class="muted">No matches</td></tr>';
   }
 
