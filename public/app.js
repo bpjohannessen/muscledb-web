@@ -65,7 +65,7 @@
     const body = document.getElementById('tbodyappend');
     if (!body) return;
     body.innerHTML = rows.map((m) =>
-      '<tr><td id="muscleResultItem"><a href="#/muscle/' + m.id + '">' + esc(m.latinName) + ' (' + esc(m.name) + ')</a></td></tr>'
+      '<tr><td id="muscleResultItem"><a href="#/muscle/' + m.id + '">' + esc(m.name) + '</a></td></tr>'
     ).join('') || '<tr><td id="muscleResultItem" class="muted">No matches</td></tr>';
   }
 
@@ -124,22 +124,23 @@
       ? muscles.map((mu) => '<a href="#/muscle/' + mu.id + '">' + esc(mu.latinName || mu.name) + '</a>').join('<br>')
       : '<span class="m-none">\u2014</span>';
 
-    // Ancestor path (root -> current). Ancestors are links; the current vessel is plain.
-    const path = d.path || [];
-    let crumb = '';
-    if (path.length > 1) {
-      crumb = '<nav class="vessel-path">' + path.map((p, i) =>
-        i === path.length - 1
-          ? '<span class="here">' + esc(p.latinName) + '</span>'
-          : '<a href="#/' + kind + '/' + p.id + '">' + esc(p.latinName) + '</a>'
-      ).join('<span class="sep">\u203A</span>') + '</nav>';
+    // Ancestor path (root -> parent), shown under the names. The current vessel is
+    // the title above, so it isn't repeated here.
+    const ancestors = (d.path || []).slice(0, -1);
+    let pathRow = '';
+    if (ancestors.length) {
+      const crumb = ancestors.map((p) =>
+        '<a href="#/' + kind + '/' + p.id + '">' + esc(p.latinName) + '</a>'
+      ).join('<span class="sep">\u203A</span>');
+      pathRow = '<tr class="vessel-path-row"><td colspan="2"><div class="vessel-path">' + crumb + '</div></td></tr>';
     }
 
     let rows = '';
     rows += '<tr class="m-latin"><th colspan="2">' + esc(latin) + '</th></tr>';
     rows += '<tr class="m-english"><th colspan="2">' + esc(name) + '</th></tr>';
+    rows += pathRow;
     rows += '<tr class="m-vessel m-' + kind + '"><th>' + verb + '</th><td>' + list + '</td></tr>';
-    setView(backLink() + crumb + '<table id="muscleResults"><tbody>' + rows + '</tbody></table>');
+    setView(backLink() + '<table id="muscleResults"><tbody>' + rows + '</tbody></table>');
   }
 
   /* ----------------------------- group view ----------------------------- */

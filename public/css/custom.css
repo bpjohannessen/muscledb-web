@@ -1,7 +1,7 @@
-/* muscledb theme v9 ------------------------------------------------------
+/* muscledb theme v11 ------------------------------------------------------
  * Anatomy reference. Latin names in an italic serif (scientific convention);
  * arteries / veins / nerves colour-coded red / blue / amber.
- * If `curl .../css/custom.css | grep "theme v9"` matches, the live file is current.
+ * If `curl .../css/custom.css | grep "theme v11"` matches, the live file is current.
  * --------------------------------------------------------------------- */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400;1,500&display=swap');
@@ -163,17 +163,23 @@ ul[id^="ml"] { padding-left: 6px; }
 ul[id^="ml"] li::before { content: "\2022"; color: var(--accent); margin-right: 8px; }
 ul[id^="ml"] li a { font-family: 'Newsreader', Georgia, serif; font-style: italic; }
 
-/* ---------- vessel ancestor path (breadcrumb) ---------- */
-.vessel-path {
-  font-size: 0.82rem;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 0 0 12px;
+/* ---------- vessel ancestor path (breadcrumb, inside the header block) ---------- */
+/* when a path row follows the english name, the divider moves below the path */
+#muscleResults tbody tr.m-english:has(+ tr.vessel-path-row) > th { border-bottom: none !important; }
+#muscleResults tr.vessel-path-row td {
+  background: #fbfcfd;
+  border-top: none !important;
+  padding: 0 18px 16px !important;
 }
-.vessel-path a { color: var(--muted); }
-.vessel-path a:hover { color: var(--accent); }
-.vessel-path .sep { margin: 0 0.4em; color: #bcc3c9; }
-.vessel-path .here { font-style: italic; color: #fff; }
+.vessel-path {
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #8a929a;
+  text-align: center;
+}
+.vessel-path a { color: #8a929a; text-decoration: none; }
+.vessel-path a:hover { color: var(--accent); text-decoration: underline; }
+.vessel-path .sep { margin: 0 0.45em; color: #c7ced4; }
 
 /* ---------- version footer ---------- */
 #version-footer {
