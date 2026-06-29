@@ -26,7 +26,7 @@ function isMissing(v) {
 // GET /api/muscles?searchterm=...
 function searchMuscles(searchTerm) {
   if (!searchTerm) {
-    return query('SELECT id, "function" AS functio, lat_name AS latinName, name FROM muscles ORDER BY latinName');
+    return query('SELECT id, "function" AS functio, lat_name AS latinName, name FROM muscles ORDER BY name');
   }
   const p = '%' + searchTerm + '%';
   return query(
@@ -187,6 +187,41 @@ function nerveById(id) {
   return { id: r.row.id, nerve_Name: r.row.name, nerve_latinName: r.row.latinName, nerveMuscles: r.muscles, path: r.path };
 }
 
+/* ------------------------------ quiz deck --------------------------- */
+// GET /api/quiz — one compact payload with everything the flashcard deck needs.
+function quizDeck() {
+  const rows = query(
+    `SELECT m.id, m.lat_name AS latinName, m.name,
+            m.origin, m.insertion, m."function" AS func,
+            g.name AS grp,
+            (SELECT GROUP_CONCAT(a.lat_name, '|')
+               FROM muscle_arteries ma JOIN arteries a ON a.id = ma.artery_id
+              WHERE ma.muscle_id = m.id) AS arteries,
+            (SELECT GROUP_CONCAT(v.lat_name, '|')
+               FROM muscle_veins mv JOIN veins v ON v.id = mv.vein_id
+              WHERE mv.muscle_id = m.id) AS veins,
+            (SELECT GROUP_CONCAT(n.lat_name, '|')
+               FROM muscle_nerves mn JOIN nerves n ON n.id = mn.nerve_id
+              WHERE mn.muscle_id = m.id) AS nerves
+       FROM muscles m LEFT JOIN groups g ON g.id = m.group_id
+      ORDER BY m.id`
+  );
+  const clean = (s) => (isMissing(s) ? null : String(s).trim());
+  const list = (s) => (isMissing(s) ? [] : String(s).split('|').filter((x) => !isMissing(x)));
+  return rows.map((r) => ({
+    id: r.id,
+    latinName: r.latinName,
+    name: r.name,
+    group: r.grp || null,
+    origin: clean(r.origin),
+    insertion: clean(r.insertion),
+    function: clean(r.func),
+    arteries: list(r.arteries),
+    veins: list(r.veins),
+    nerves: list(r.nerves),
+  }));
+}
+
 module.exports = {
-  searchMuscles, muscleById, muscleGroupHierarchy, arteryById, veinById, nerveById,
+  searchMuscles, muscleById, muscleGroupHierarchy, arteryById, veinById, nerveById, quizDeck,
 };

@@ -128,6 +128,11 @@ const server = http.createServer((req, res) => {
       });
     }
 
+    // GET /api/quiz — full flashcard deck
+    if (pathname === '/api/quiz') {
+      return sendJson(res, 200, q.quizDeck());
+    }
+
     // GET /api/muscles  and  GET /api/muscles/:id
     if (parts[0] === 'api' && parts[1] === 'muscles') {
       if (parts.length === 2) {
